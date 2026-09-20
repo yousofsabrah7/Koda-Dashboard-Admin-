@@ -1,5 +1,5 @@
 // src/pages/products/index.jsx
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import StatCard from "../../components/products/statCard";
 import {
   PackageSearch,
@@ -9,8 +9,6 @@ import {
   TrendingUp,
   Boxes,
   SlidersHorizontal,
-  Tags,
-  Bookmark,
 } from "lucide-react";
 import Search from "../../components/UI/Search";
 import Filter from "../../components/UI/Filter";
@@ -19,6 +17,7 @@ import { useProducts } from "../../services/apiHooks/productsHook";
 import ProductsCard from "../../components/products/productCart";
 import { productFilters } from "../../utils/Filters";
 import Pagination from "../../components/UI/Pagination";
+import { useProductFilters } from "../../utils/useFilters";
 
 const staticConfig = [
   { key: "total", icon: Package, label: "Total" },
@@ -39,6 +38,7 @@ const index = () => {
     maxPrice: "",
     sort: "",
   });
+  const [productFilter, setProductFilter] = useState(productFilters);
 
   const {
     data: response,
@@ -46,6 +46,7 @@ const index = () => {
     isError,
   } = useProducts(page, 10, search, filters);
 
+  const { brands, categories, error, isFilterLoading } = useProductFilters();
   const handleFilterChange = (name, value) => {
     setFilters((prev) => ({
       ...prev,
@@ -54,7 +55,6 @@ const index = () => {
   };
   const handleEditProduct = (product) => {
     if (!product?._id) return;
-    console.log(product?._id);
     navigate(`/product/edit/${product._id}`);
   };
   const productList = response?.products || [];
@@ -65,10 +65,29 @@ const index = () => {
     inStock: productList.filter((p) => p.stock > 0).length,
     outOfStock: productList.filter((p) => p.stock === 0).length,
   };
-
+  useEffect(() => {
+    if (!categories || !brands) return;
+    setProductFilter((prev) =>
+      prev.map((filter, index) => {
+        if (index === 0) {
+          return {
+            ...filter,
+            options: isFilterLoading ? null : categories,
+          };
+        }
+        if (index === 1) {
+          return {
+            ...filter,
+            options: isFilterLoading ? null : brands,
+          };
+        }
+        return filter;
+      }),
+    );
+  }, [response]);
   return (
     <div>
-      <div className="products  pt-6 flex flex-col gap-4 items-center px-8">
+      <div className="products pt-6 flex flex-col gap-4 items-center px-8">
         <div className="product-top flex flex-col sm:flex-row justify-between items-start sm:items-center gap-5 w-full bg-surface-elevated rounded-3xl px-5 sm:p-8 border border-border-subtle">
           <div className="div1 flex flex-row items-center gap-4">
             <div className="flex items-center justify-center bg-accent-light rounded-2xl size-15 shrink-0 border border-border-subtle">
@@ -139,7 +158,7 @@ const index = () => {
 
             <div className={`${showFilters ? "mt-3" : ""} overflow-hidden`}>
               <Filter
-                filters={productFilters}
+                filters={productFilter}
                 values={filters}
                 onChange={handleFilterChange}
                 showFilters={showFilters}

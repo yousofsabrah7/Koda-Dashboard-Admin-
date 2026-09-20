@@ -22,6 +22,7 @@ import { selectUser } from "../../redux/services/authSlice";
 import Modal from "../../components/UI/Modal";
 import AddUserModal from "./AddUserModal";
 import EditUserModal from "./EditUserModal";
+import { useChangeRole } from "../../services/apiHooks/authHook";
 
 const USERS_PER_PAGE = 10;
 
@@ -49,6 +50,11 @@ const Users = () => {
     isPending: isUpdatingPending,
     isSuccess: isUpdatingSuccess,
   } = useUpdateUser();
+  const {
+    mutate: changeRole,
+    isPending: isRolePending,
+    isSuccess: isRoleSuccess,
+  } = useChangeRole();
 
   const {
     mutate: deleteUser,
@@ -104,15 +110,10 @@ const Users = () => {
 
   const handleChangeRole = (user) => {
     if (!user?._id) return;
-
     const newRole = user.role?.toLowerCase() === "admin" ? "customer" : "admin";
-
-    updateUser({
-      id: user._id,
-
-      payload: {
+    changeRole({
+        userId: user?._id,
         role: newRole,
-      },
     });
   };
   const handleAddUser = (payload) => {
@@ -136,11 +137,12 @@ const Users = () => {
     if (!selectedUser?._id) return;
 
     deleteUser(selectedUser._id);
-
-    if (isDeletingSuccess) {
-      setShowDeleteModal(false);
-      setSelectedUser(null);
-    }
+    setTimeout(() => {
+      if (isDeletingSuccess) {
+        setShowDeleteModal(false);
+        setSelectedUser(null);
+      }
+    }, 500);
   };
   const handleUpdateUser = (payload) => {
     if (!selectedUser?._id) return;
@@ -306,12 +308,10 @@ const Users = () => {
           className="flex items-center gap-1"
           onClick={(e) => e.stopPropagation()}
         >
-          {/* Change Role */}
-
           <button
             type="button"
             title={isAdmin ? "Make Customer" : "Make Admin"}
-            disabled={isUpdatingPending}
+            disabled={isRolePending}
             onClick={() => handleChangeRole(user)}
             className="
               rounded-lg
@@ -405,7 +405,7 @@ const Users = () => {
         "
       >
         <div>
-          <h1
+          <h2
             className="
               text-2xl
               font-bold
@@ -413,8 +413,7 @@ const Users = () => {
             "
           >
             Users
-          </h1>
-
+          </h2>
           <p
             className="
               mt-1
@@ -445,7 +444,7 @@ const Users = () => {
             className="
               flex
               items-center
-              gap-1.5
+              gap-1
               rounded-xl
               bg-accent
               text-center

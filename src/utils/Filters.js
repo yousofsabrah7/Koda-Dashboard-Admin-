@@ -47,20 +47,12 @@ export const productFilters = [
   {
     name: "category",
     label: "Category",
-    options: [
-      { value: "car", label: "Car" },
-      { value: "electronics", label: "Electronics" },
-      { value: "clothes", label: "Clothes" },
-    ],
+    options: [],
   },
   {
     name: "brand",
     label: "Brand",
-    options: [
-      { value: "car", label: "Car" },
-      { value: "apple", label: "Apple" },
-      { value: "samsung", label: "Samsung" },
-    ],
+    options: [],
   },
   {
     name: "minPrice",

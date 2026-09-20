@@ -39,9 +39,7 @@ const HomeDashboard = () => {
       <Header
         title={"Admin overview"}
         desc={"Real-time commerce health"}
-        subtitle={
-          "Monitor your storefront with AI-style clarity and live API metrics."
-        }
+        subtitle={"just Admin"}
       />
 
       <div className="DashBoardStates grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">

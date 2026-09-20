@@ -1,4 +1,4 @@
-import apiClient from '../../config/apiClient';
+import apiClient from "../../config/apiClient";
 
 export const getAllUsers = async () => {
   const response = await apiClient.get("/users/all");
@@ -13,9 +13,9 @@ export const getUserById = async (id) => {
 export const addUser = async (payload) => {
   const response = await apiClient.post("/users/add", payload);
   return response.data;
- };
+};
 
-export const updataUser = async (id, payload) => {
+export const updateUser = async (id, payload) => {
   const response = await apiClient.patch(`/users/${id}`, payload);
   return response.data;
 };

@@ -92,15 +92,16 @@ const AddUserModal = ({
     >
       <div className="space-y-4">
         <p className="text-red-400">{error}</p>
-        <input
-          required
-          type="text"
-          value={newUsername}
-          onChange={(e) => {
-            (setNewUsername(e.target.value), setError(""));
-          }}
-          placeholder="Username"
-          className="
+        <form className="space-y-4">
+          <input
+            required
+            type="text"
+            value={newUsername}
+            onChange={(e) => {
+              (setNewUsername(e.target.value), setError(""));
+            }}
+            placeholder="Username"
+            className="
             w-full
             rounded-xl
             border
@@ -114,17 +115,17 @@ const AddUserModal = ({
             transition
             focus:border-accent
           "
-        />
+          />
 
-        <input
-          required
-          type="email"
-          value={newEmail}
-          onChange={(e) => {
-            (setNewEmail(e.target.value), setError(""));
-          }}
-          placeholder="Email"
-          className="
+          <input
+            required
+            type="email"
+            value={newEmail}
+            onChange={(e) => {
+              (setNewEmail(e.target.value), setError(""));
+            }}
+            placeholder="Email"
+            className="
             w-full
             rounded-xl
             border
@@ -138,17 +139,17 @@ const AddUserModal = ({
             transition
             focus:border-accent
           "
-        />
+          />
 
-        <input
-          required
-          type="password"
-          value={newPassword}
-          onChange={(e) => {
-            (setNewPassword(e.target.value), setError(""));
-          }}
-          placeholder="Password"
-          className="
+          <input
+            required
+            type="password"
+            value={newPassword}
+            onChange={(e) => {
+              (setNewPassword(e.target.value), setError(""));
+            }}
+            placeholder="Password"
+            className="
             w-full
             rounded-xl
             border
@@ -162,7 +163,8 @@ const AddUserModal = ({
             transition
             focus:border-accent
           "
-        />
+          />
+        </form>
       </div>
     </Modal>
   );

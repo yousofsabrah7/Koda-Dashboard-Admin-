@@ -2,6 +2,8 @@ import React from "react";
 import { Plus, X } from "lucide-react";
 
 function ProductFormFields({
+  categories,
+  brands,
   formData,
   errors,
   onChange,
@@ -15,7 +17,6 @@ function ProductFormFields({
 }) {
   const inputBaseClass =
     "w-full h-12 rounded-xl border bg-surface-base px-3.5 text-sm text-text-primary outline-none transition-all placeholder:text-text-muted disabled:cursor-not-allowed disabled:opacity-60";
-
   const getInputClass = (fieldName) =>
     `${inputBaseClass} ${
       errors?.[fieldName]
@@ -29,7 +30,6 @@ function ProductFormFields({
 
   return (
     <div className="flex w-full flex-col">
-      {/* Product Name */}
       <div className="mb-5">
         <label className={labelClass}>Product Name</label>
 
@@ -46,7 +46,6 @@ function ProductFormFields({
         {errors?.name && <span className={errorClass}>{errors.name}</span>}
       </div>
 
-      {/* Short Description */}
       <div className="mb-5">
         <label className={labelClass}>Short Description</label>
 
@@ -67,7 +66,6 @@ function ProductFormFields({
         )}
       </div>
 
-      {/* Description */}
       <div className="mb-5">
         <label className={labelClass}>Description</label>
 
@@ -88,7 +86,6 @@ function ProductFormFields({
         )}
       </div>
 
-      {/* Price + Discount */}
       <div className="mb-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div>
           <label className={labelClass}>Price</label>
@@ -125,7 +122,6 @@ function ProductFormFields({
         </div>
       </div>
 
-      {/* Stock + SKU */}
       <div className="mb-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div>
           <label className={labelClass}>Stock</label>
@@ -160,7 +156,6 @@ function ProductFormFields({
         </div>
       </div>
 
-      {/* Category + Subcategory */}
       <div className="mb-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div>
           <label className={labelClass}>Category</label>
@@ -172,8 +167,14 @@ function ProductFormFields({
             className={`${getInputClass("category")} cursor-pointer`}
             disabled={isLoading}
           >
-            <option value="electronics">Electronics</option>
-            <option value="fashion">Fashion</option>
+            <option value="" hidden>
+              Category
+            </option>
+            {categories?.map((category) => (
+              <option value={category} className="capitalize">
+                {category}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -192,7 +193,6 @@ function ProductFormFields({
         </div>
       </div>
 
-      {/* Brand */}
       <div className="mb-5">
         <label className={labelClass}>Brand</label>
 
@@ -205,9 +205,13 @@ function ProductFormFields({
           className={getInputClass("brand")}
           disabled={isLoading}
         />
+        <p className="divide divide-x">
+          {brands?.map((brand) => (
+            <span className="text-xs text-text-muted px-1.5"> {brand}</span>
+          ))}
+        </p>
       </div>
 
-      {/* Tags */}
       <div className="mb-6">
         <label className={labelClass}>Tags</label>
 
@@ -257,7 +261,7 @@ function ProductFormFields({
         )}
 
         <span className="mt-2 block text-xs leading-5 text-text-muted">
-          Add one or more tags to organize the product.
+          Add two or more tags to organize the product.
         </span>
       </div>
 
@@ -306,7 +310,7 @@ function ProductFormFields({
           disabled={isLoading}
           className="h-11 rounded-xl bg-accent px-5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-accent-hover active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {isLoading ? "Saving..." : submitLabel}{" "}
+          {isLoading ? submitLabel + " ..." : submitLabel}
         </button>
       </div>
     </div>

@@ -6,13 +6,12 @@ import {
 } from "../redux/services/authSlice";
 import { Navigate, Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useLoading } from "../services/customHooks/useLoading";
 import { useProfile } from "../services/apiHooks/authHook";
 
 const RequireAdmin = () => {
   const role = useSelector(selectRole);
   const isAuthorize = useSelector(selectIsAuthorize);
-  const { isLoading, data } = useLoading(useProfile, setProfile);
+  const { isLoading, data, error } = useProfile();
 
   if (isLoading) {
     return (
@@ -20,8 +19,9 @@ const RequireAdmin = () => {
         <span className="size-15 border-6 border-color-accent border-r-transparent rounded-full animate-spin"></span>
       </div>
     );
-  }
-  if (!data?.success && (role !== "admin" || !isAuthorize)) {
+  } else if (!data?.success && error && (role !== "admin" || !isAuthorize)) {
+    return <Navigate to="/login" replace />;
+  } else if (error?.statusCode === 401) {
     return <Navigate to="/login" replace />;
   }
 

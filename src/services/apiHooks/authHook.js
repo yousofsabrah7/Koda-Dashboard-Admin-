@@ -11,7 +11,6 @@ import {
   setRole,
 } from "../../redux/services/authSlice";
 import {
-  adminTest,
   changeUserRole,
   getProfile,
   loginUser,
@@ -51,8 +50,7 @@ export const useLogin = () => {
     },
     onError: (error) => {
       const message =
-        error?.response?.data?.message ||
-        "Login failed. Please check your email and password.";
+        error?.message || "Login failed. Please check your email and password.";
       toast.error(message);
     },
   });
@@ -73,8 +71,7 @@ export const useLogout = () => {
     onError: (error) => {
       queryClient.clear();
       setAuthToken(null);
-      const message =
-        error?.response?.data?.message || "An error occurred during logout.";
+      const message = error?.message || "An error occurred during logout.";
       toast.error(message);
     },
   });
@@ -89,7 +86,6 @@ export const useProfile = () => {
     queryFn: getProfile,
     enabled: !!token,
   });
-
   useEffect(() => {
     if (query.isSuccess) {
       dispatch(setProfile(query.data));
@@ -98,38 +94,11 @@ export const useProfile = () => {
 
   useEffect(() => {
     if (query.isError) {
-      const message =
-        query.error?.response?.data?.message || "Something went wrong";
+      const message = query.error?.message || "Something went wrong";
       dispatch(setAuthorize(query.error?.response?.status));
-      toast.error(message);
+      toast.error(query.error?.response?.status === 401 ? null : message);
     }
   }, [query.isError, query.error, dispatch, token]);
-  return query;
-};
-
-export const useAdminTest = () => {
-  const dispatch = useDispatch();
-
-  const query = useQuery({
-    queryKey: ["adminTest"],
-    queryFn: adminTest,
-    enabled: !!token,
-  });
-  useEffect(() => {
-    if (query.isSuccess) {
-      dispatch(setAdmin(query.data));
-    }
-  }, [query.isSuccess, query.data, dispatch]);
-
-  useEffect(() => {
-    if (query.isError) {
-      const message =
-        query.error?.response?.data?.message || "Something went wrong";
-      dispatch(setAuthorize(query.error?.response?.status));
-      toast.error(message);
-    }
-  }, [query.isError, query.error]);
-
   return query;
 };
 
@@ -146,8 +115,7 @@ export const useChangeRole = () => {
     },
     onError: (error) => {
       const message =
-        error?.response?.data?.message ||
-        "Failed to update user role. Check your permissions.";
+        error?.message || "Failed to update user role. Check your permissions.";
       toast.error(message);
     },
   });

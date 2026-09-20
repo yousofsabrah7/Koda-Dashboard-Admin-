@@ -20,7 +20,7 @@ function Navbar({ isDark, setIsDark, showSidebar, setShowSidebar }) {
 
   return (
     <div>
-      <div className="lg:pl-[320px] w-full h-[80px] fixed top-0 z-[5] pt-0 pb-0 pr-[30px] border-b border-border-subtle bg-surface-card/90 text-text-primary backdrop-blur-md flex justify-between items-center pl-[10px]  transition-colors">
+      <div className="lg:pl-[320px] w-full h-[80px] fixed top-0 z-40 pt-0 pb-0 pr-[30px] border-b border-border-subtle bg-surface-card/90 text-text-primary backdrop-blur-md flex justify-between items-center pl-[10px]  transition-colors">
         <div className="flex items-center gap-[15px]">
           <button
             className="lg:hidden items-center justify-center rounded-[15px] border border-border-subtle bg-surface-elevated text-text-primary hover:border-border-strong px-3 py-[9px] text-[20px] cursor-pointer ml-[10px] transition"

@@ -131,8 +131,6 @@ export default function Wishlists() {
   return (
     <main className="w-full px-4 py-6 sm:px-6 lg:px-8">
       <div className="mx-auto flex w-full max-w-[1600px] flex-col gap-5">
-        {/* Header */}
-
         <div className="flex w-full flex-col justify-between gap-5 rounded-3xl border border-border-subtle bg-surface-elevated p-5 sm:flex-row sm:items-center md:p-8">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[1px] text-accent">
@@ -165,9 +163,6 @@ export default function Wishlists() {
             </p>
           </div>
         </div>
-
-        {/* Statistics */}
-
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
           <StatCard
             icon={Heart}
@@ -193,9 +188,6 @@ export default function Wishlists() {
             isLoading={isStatsLoading}
           />
         </div>
-
-        {/* Top Products */}
-
         <section className="overflow-hidden rounded-3xl border border-border-subtle bg-surface-card">
           <div className="flex flex-col gap-3 border-b border-border-subtle p-5 sm:flex-row sm:items-center sm:justify-between md:p-6">
             <div>
@@ -239,9 +231,6 @@ export default function Wishlists() {
             )}
           </div>
         </section>
-
-        {/* Wishlists Table */}
-
         <section className="w-full">
           <div className="mb-4 flex items-center justify-between">
             <div>
@@ -271,9 +260,6 @@ export default function Wishlists() {
 
           <Table columns={columns} rows={rows} isLoading={isWishlistLoading} />
         </section>
-
-        {/* Pagination */}
-
         <div className="mb-8 w-full">
           <Pagination
             currentPage={wishlistData?.currentPage || page}
