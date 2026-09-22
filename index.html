@@ -4,26 +4,26 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>koda-store</title>
+    <title>E-Hub</title>
     <script>
-  (function () {
-    const saved = localStorage.getItem("Theme");
+      (function () {
+        const saved = localStorage.getItem("Theme");
 
-    if (saved === "dark") {
-      document.documentElement.classList.add("dark");
-    } else if (saved === "light") {
-      // explicitly saved light — do nothing, light is default
-    } else {
-      // no saved preference — check OS setting
-      const prefersDark = window.matchMedia(
-        "(prefers-color-scheme: dark)"   // does the window match if dark = true and if no it is equal false
-      ).matches;
-      if (prefersDark) {
-        document.documentElement.classList.add("dark");
-      }
-    }
-  })(); // self invoked function
-</script>
+        if (saved === "dark") {
+          document.documentElement.classList.add("dark");
+        } else if (saved === "light") {
+          // explicitly saved light — do nothing, light is default
+        } else {
+          // no saved preference — check OS setting
+          const prefersDark = window.matchMedia(
+            "(prefers-color-scheme: dark)", // does the window match if dark = true and if no it is equal false
+          ).matches;
+          if (prefersDark) {
+            document.documentElement.classList.add("dark");
+          }
+        }
+      })(); // self invoked function
+    </script>
   </head>
   <body>
     <div id="root"></div>

@@ -1,7 +1,3 @@
-// =========================
-// Helper
-// =========================
-
 const formatDate = (date) => {
     if (!date) return "";
 
@@ -11,12 +7,6 @@ const formatDate = (date) => {
         year: "numeric",
     });
 };
-
-
-// =========================
-// Dashboard Overview
-// =========================
-
 const dashboardStatsConfig = [
     {
         id: 1,
