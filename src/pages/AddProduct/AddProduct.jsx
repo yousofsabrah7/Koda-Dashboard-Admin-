@@ -1,29 +1,15 @@
-
 import React, { useState } from "react";
 
 import ImageGallery from "./ImageGallery";
 import ProductFormFields from "./ProductFormFields";
 import ProductHeader from "./ProductHeader";
 
-import coverImage1 from "./images/cover.png";
-import coverImage2 from "./images/cover1.png";
-
 import { validateProductForm } from "./productValidation";
 import { useCreateProduct } from "../../services/apiHooks/productsHook";
+import { replace, useNavigate } from "react-router-dom";
+import { useProductFilters } from "../../utils/useFilters";
 function AddProduct() {
-  /* =========================
-     Images
-  ========================= */
-
-  const [images, setImages] = useState([
-    coverImage1,
-    coverImage2,
-  ]);
-
-  /* =========================
-     Form Data
-  ========================= */
-
+  const [images, setImages] = useState([]);
   const [formData, setFormData] = useState({
     name: "",
     shortDesc: "",
@@ -40,80 +26,30 @@ function AddProduct() {
     active: true,
   });
 
-  /* =========================
-     State
-  ========================= */
-
   const [errors, setErrors] = useState({});
   const [tagInput, setTagInput] = useState("");
-
-  /* =========================
-     Mutation
-  ========================= */
-
+  const navigate = useNavigate();
   const createProductMutation = useCreateProduct();
-
+  const { categories, brands } = useProductFilters();
   const isLoading = createProductMutation.isPending;
-
-  /* =========================
-     Image Change
-  ========================= */
-
+  const isSuccess = createProductMutation.isSuccess;
   const handleImageChange = (e) => {
-    const files = Array.from(e.target.files);
+    const newFiles = Array.from(e.target.files);
 
-    const newImageUrls = files.map((file) =>
-      URL.createObjectURL(file),
-    );
+    setImages((prevImages) => [...prevImages, ...newFiles]);
 
-    setImages((prev) => [
-      ...prev,
-      ...newImageUrls,
-    ]);
+    e.target.value = "";
   };
-
-  /* =========================
-     Remove Image
-  ========================= */
-
   const handleRemoveImage = (indexToRemove) => {
-    if (
-      indexToRemove === 0 ||
-      indexToRemove === 1
-    ) {
-      alert(
-        "لا يمكن حذف الصور الرئيسية الثابتة للمنتج!",
-      );
-
-      return;
-    }
-
-    setImages((prev) =>
-      prev.filter(
-        (_, index) =>
-          index !== indexToRemove,
-      ),
-    );
+    setImages((prev) => prev.filter((_, index) => index !== indexToRemove));
   };
-
-  /* =========================
-     Form Change
-  ========================= */
 
   const handleChange = (e) => {
-    const {
-      name,
-      value,
-      type,
-      checked,
-    } = e.target;
+    const { name, value, type, checked } = e.target;
 
     setFormData((prev) => ({
       ...prev,
-      [name]:
-        type === "checkbox"
-          ? checked
-          : value,
+      [name]: type === "checkbox" ? checked : value,
     }));
 
     setErrors((prev) => {
@@ -127,10 +63,6 @@ function AddProduct() {
     });
   };
 
-  /* =========================
-     Add Tag
-  ========================= */
-
   const handleAddTag = () => {
     const newTag = tagInput.trim();
 
@@ -138,53 +70,31 @@ function AddProduct() {
 
     setFormData((prev) => ({
       ...prev,
-      tags: [
-        ...prev.tags,
-        newTag,
-      ],
+      tags: [...prev.tags, newTag],
     }));
 
     setTagInput("");
   };
 
-  /* =========================
-     Remove Tag
-  ========================= */
-
   const handleRemoveTag = (tagToRemove) => {
     setFormData((prev) => ({
       ...prev,
-      tags: prev.tags.filter(
-        (tag) =>
-          tag !== tagToRemove,
-      ),
+      tags: prev.tags.filter((tag) => tag !== tagToRemove),
     }));
   };
-
-  /* =========================
-     Cancel
-  ========================= */
 
   const handleCancel = () => {
     window.history.back();
   };
-
-  /* =========================
-     Submit
-  ========================= */
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     setErrors({});
 
-    const validationErrors =
-      validateProductForm(formData);
+    const validationErrors = validateProductForm(formData);
 
-    if (
-      Object.keys(validationErrors)
-        .length > 0
-    ) {
+    if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
 
       return;
@@ -193,19 +103,15 @@ function AddProduct() {
     const productData = {
       name: formData.name,
 
-      shortDescription:
-        formData.shortDesc,
+      shortDescription: formData.shortDesc,
 
-      description:
-        formData.description,
+      description: formData.description,
 
       price: Number(formData.price),
 
       ...(formData.discountPrice !== ""
         ? {
-            discountPrice: Number(
-              formData.discountPrice,
-            ),
+            discountPrice: Number(formData.discountPrice),
           }
         : {}),
 
@@ -215,45 +121,26 @@ function AddProduct() {
 
       category: formData.category,
 
-      subcategory:
-        formData.subcategory,
+      subcategory: formData.subcategory,
 
       brand: formData.brand,
 
       tags: formData.tags,
 
       featured: formData.featured,
-
-      active: formData.active,
-
-      images: [
-        {
-          url:
-            "https://images.unsplash.com/photo-1505740420928-5e560c06d30e",
-        },
-        {
-          url:
-            "https://images.unsplash.com/photo-1523275335684-37898b6baf30",
-        },
-      ],
+      images: images,
     };
 
     try {
-      await createProductMutation.mutateAsync(
-        productData,
-      );
-
+      await createProductMutation.mutateAsync(productData);
+      if (isSuccess) {
+        navigate("/products", replace);
+      }
       setErrors({});
     } catch (error) {
-      console.error(
-        "API ERROR:",
-        error,
-      );
-
       const errorMessage =
-        error?.message ||
-        "حدث خطأ أثناء حفظ المنتج، حاول مرة أخرى.";
-
+        error?.message || "حدث خطأ أثناء حفظ المنتج، حاول مرة أخرى.";
+      console.log(error);
       setErrors({
         general: errorMessage,
       });
@@ -270,10 +157,6 @@ function AddProduct() {
         text-text-primary
       "
     >
-      {/* =========================
-          Page Container
-      ========================= */}
-
       <div
         className="
           mx-auto
@@ -285,18 +168,7 @@ function AddProduct() {
           lg:px-8
         "
       >
-        {/* =========================
-            Header
-        ========================= */}
-
-        <ProductHeader
-          onBack={handleCancel}
-        />
-
-        {/* =========================
-            General Error
-        ========================= */}
-
+        <ProductHeader onBack={handleCancel} />
         {errors.general && (
           <div
             className="
@@ -323,15 +195,9 @@ function AddProduct() {
               ⚠️
             </span>
 
-            <span>
-              {errors.general}
-            </span>
+            <span>{errors.general}</span>
           </div>
         )}
-
-        {/* =========================
-            Form
-        ========================= */}
 
         <form
           onSubmit={handleSubmit}
@@ -345,10 +211,6 @@ function AddProduct() {
             xl:grid-cols-[350px_minmax(0,1fr)]
           "
         >
-          {/* =======================
-              Image Gallery
-          ======================= */}
-
           <div
             className="
               lg:sticky
@@ -391,20 +253,12 @@ function AddProduct() {
 
               <ImageGallery
                 images={images}
-                onImageChange={
-                  handleImageChange
-                }
-                onRemoveImage={
-                  handleRemoveImage
-                }
+                isLoading={isLoading}
+                onImageChange={handleImageChange}
+                onRemoveImage={handleRemoveImage}
               />
             </div>
           </div>
-
-          {/* =======================
-              Product Information
-          ======================= */}
-
           <div
             className="
               min-w-0
@@ -416,8 +270,6 @@ function AddProduct() {
               shadow-sm
             "
           >
-            {/* Form Header */}
-
             <div
               className="
                 border-b
@@ -444,15 +296,14 @@ function AddProduct() {
                   text-text-muted
                 "
               >
-                Fill in the details below
-                to create your product.
+                Fill in the details below to create your product.
               </p>
             </div>
 
-            {/* Form Fields */}
-
             <div className="p-5 sm:p-6">
               <ProductFormFields
+                categories={categories}
+                brands={brands}
                 formData={formData}
                 errors={errors}
                 onChange={handleChange}
@@ -460,9 +311,7 @@ function AddProduct() {
                 tagInput={tagInput}
                 setTagInput={setTagInput}
                 onAddTag={handleAddTag}
-                onRemoveTag={
-                  handleRemoveTag
-                }
+                onRemoveTag={handleRemoveTag}
                 onCancel={handleCancel}
               />
             </div>

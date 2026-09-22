@@ -3,12 +3,6 @@ export const getAdminDashboard = async () => {
   const response = await apiClient.get("/orders/admin/dashboard");
   return response.data;
 };
-export const getAdminCart = async (page, limit) => {
-  const response = await apiClient.get(
-    `/orders/admin/carts?page=${page}&limit=${limit}`,
-  );
-  return response.data;
-};
 
 export const getAllOrders = async (page, limit, filter = {}) => {
   const response = await apiClient.get("/orders/admin", {
@@ -25,11 +19,6 @@ export const getAllOrders = async (page, limit, filter = {}) => {
     },
   });
 
-  return response.data;
-};
-
-export const getOrderById = async (orderId) => {
-  const response = await apiClient.get(`/orders/admin/${orderId}`);
   return response.data;
 };
 

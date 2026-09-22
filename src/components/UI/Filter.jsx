@@ -78,11 +78,19 @@ const Filter = ({ filters = [], values = {}, onChange, showFilters }) => {
                 >
                   <option value="">{placeholder || label}</option>
 
-                  {options.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
+                  {options.map((option) => {
+                    const value =
+                      typeof option === "object" ? option.value : option;
+
+                    const label =
+                      typeof option === "object" ? option.label : option;
+
+                    return (
+                      <option key={value} value={value}>
+                        {label}
+                      </option>
+                    );
+                  })}
                 </select>
 
                 <ChevronDown

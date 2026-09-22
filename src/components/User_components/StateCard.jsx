@@ -35,25 +35,21 @@ const Statecard = () => {
       label: "Total Users",
       value: totalUsers,
       icon: faUsers,
-      color: "bg-[#cf7142ff]",
     },
     {
       label: "Admins",
       value: totalAdmins,
       icon: faShieldHalved,
-      color: "bg-blue-500",
     },
     {
       label: "Customers",
       value: totalCustomers,
       icon: faUsers,
-      color: "bg-emerald-500",
     },
     {
       label: "Verified",
       value: totalVerified,
       icon: faUserCheck,
-      color: "bg-purple-500",
     },
   ];
 

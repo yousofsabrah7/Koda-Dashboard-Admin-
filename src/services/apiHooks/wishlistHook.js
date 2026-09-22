@@ -13,8 +13,7 @@ export const useAdminWishlist = (page, limit) => {
 
   useEffect(() => {
     if (query.isError) {
-      const message =
-        query.error?.response?.data?.message || "Something went wrong";
+      const message = query.error?.message || "Something went wrong";
 
       toast.error(message);
     }
@@ -30,8 +29,7 @@ export const useAdminWishlistStatus = () => {
   });
   useEffect(() => {
     if (query.isError) {
-      const message =
-        query.error?.response?.data?.message || "Something went wrong";
+      const message = query.error?.message || "Something went wrong";
 
       toast.error(message);
     }

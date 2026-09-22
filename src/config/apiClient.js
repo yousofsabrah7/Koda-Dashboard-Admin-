@@ -5,7 +5,6 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const apiClient = axios.create({
   baseURL: BASE_URL,
-  timeout: 10000,
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
@@ -16,11 +15,9 @@ const apiClient = axios.create({
 apiClient.interceptors.request.use(
   (config) => {
     const token = getAuthToken();
-
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-
     return config;
   },
   (error) => {
@@ -35,10 +32,14 @@ apiClient.interceptors.response.use(
   (error) => {
     if (error.response) {
       const status = error.response.status;
-      let message = error.response.data?.message || "An error occurred";
-
+      let message =
+        error.response.data?.errors?.join("\n") ||
+        error.response.data?.message ||
+        "An error occurred";
       if (status === 401) {
-        message = error.response.data?.message || "An error occurred";
+        message = error.response.data?.message.includes("E11000 duplicate")
+          ? "Please reset data and try again"
+          : error.response.data?.message || "An error occurred";
       } else if (status === 403) {
         message = error.response.data?.message || "An error occurred";
       } else if (status === 404) {
@@ -54,7 +55,7 @@ apiClient.interceptors.response.use(
     } else if (error.request) {
       return Promise.reject({
         statusCode: 400,
-        message: "No response from server",
+        message: error?.response?.data?.message,
       });
     } else {
       return Promise.reject({

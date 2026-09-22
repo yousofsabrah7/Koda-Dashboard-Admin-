@@ -11,7 +11,7 @@ function Sidebar({ showSidebar, setShowSidebar }) {
   return (
     <div className="sidebar-nav">
       <div
-        className={`sidebar pt-[23px] pb-[24px] pl-[25px] w-[285px] transition duration-300 ease-linear h-screen bg-surface-card text-text-primary border-r border-border-subtle fixed top-0 left-0 z-40 overflow-auto flex flex-col ${
+        className={`sidebar pt-[23px] pb-[24px] pl-[25px] w-[285px] transition duration-300 ease-linear h-screen bg-surface-card text-text-primary border-r border-border-subtle fixed top-0 left-0 z-50 overflow-auto flex flex-col ${
           showSidebar ? "translate-x-0" : "-translate-x-full"
         } lg:translate-x-0`}
       >

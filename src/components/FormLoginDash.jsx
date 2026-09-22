@@ -1,24 +1,16 @@
 import { LockKeyhole, Mail } from "lucide-react";
-import { Navigate, useNavigate } from "react-router-dom";
-import { useLogin } from "../services/apiHooks/authHook";
+import { useNavigate } from "react-router-dom";
+import { useLogin, useProfile } from "../services/apiHooks/authHook";
 import { useState } from "react";
-import { useSelector } from "react-redux";
-import { selectToken } from "../redux/services/authSlice";
 
 function FormLogin() {
-  // State
   const [email1, setEmail] = useState("");
   const [password1, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const { mutateAsync, isPending, isSuccess, isError, error, data } =
     useLogin();
-  // Navigate
   const navigate = useNavigate();
-  const token = useSelector(selectToken);
-  if (token) {
-    return <Navigate to={"/"} replace />;
-  }
-  // test validation input
+
   const validate = () => {
     const newErrors = {};
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -35,7 +27,6 @@ function FormLogin() {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-  // Submit data
   const handelSubmit = async (e) => {
     e.preventDefault();
     const email = email1.trim();
@@ -50,7 +41,6 @@ function FormLogin() {
         navigate("/");
       }
     } catch (error) {
-      //err
       setEmail("");
       setPassword("");
     }

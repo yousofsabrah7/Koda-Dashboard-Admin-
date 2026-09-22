@@ -23,10 +23,6 @@ const Table = ({
     >
       <div className="w-full overflow-x-auto">
         <table className="w-full min-w-[800px] border-collapse">
-          {/* =========================
-              THEAD
-          ========================= */}
-
           <thead>
             <tr
               className="
@@ -55,11 +51,6 @@ const Table = ({
               ))}
             </tr>
           </thead>
-
-          {/* =========================
-              TBODY
-          ========================= */}
-
           <tbody>
             {isLoading ? (
               <TableSkeleton columns={columns.length} />
@@ -121,29 +112,19 @@ const Table = ({
     </div>
   );
 };
-
-/* =========================
-   Cell Renderer
-========================= */
-
 const renderCell = (value, column) => {
   if (value === null || value === undefined) {
     return <span className="text-text-muted">—</span>;
   }
 
-  /* Status */
-
   if (column.type === "status") {
     return <StatusBadge status={value} />;
   }
-
-  /* Payment */
 
   if (column.type === "payment") {
     return <PaymentCell status={value?.status} method={value?.method} />;
   }
 
-  /* Money */
 
   if (column.type === "money") {
     return (
@@ -159,18 +140,12 @@ const renderCell = (value, column) => {
     );
   }
 
-  /* Custom React Element */
-
   if (typeof value === "object") {
     return value;
   }
 
   return value;
 };
-
-/* =========================
-   Status Badge
-========================= */
 
 const StatusBadge = ({ status }) => {
   const styles = {
@@ -220,11 +195,6 @@ const StatusBadge = ({ status }) => {
     </span>
   );
 };
-
-/* =========================
-   Payment
-========================= */
-
 const PaymentCell = ({ status, method }) => {
   const statusStyles = {
     paid: "text-emerald-600",
@@ -264,10 +234,6 @@ const PaymentCell = ({ status, method }) => {
     </div>
   );
 };
-
-/* =========================
-   Skeleton
-========================= */
 
 const TableSkeleton = ({ columns }) => {
   return Array.from({

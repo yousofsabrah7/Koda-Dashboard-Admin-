@@ -1,8 +1,4 @@
-import {
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import toast from "react-hot-toast";
 
@@ -11,7 +7,7 @@ import {
   deleteUser,
   getAllUsers,
   getUserById,
-  updataUser,
+  updateUser,
 } from "../api/usersApi";
 
 export const useUsers = () => {
@@ -44,8 +40,7 @@ export const useAddUser = () => {
     },
 
     onError: (error) => {
-      const message =
-        error?.response?.data?.message || "Failed to add user";
+      const message = error?.message || "Failed to add user";
 
       toast.error(message);
     },
@@ -56,19 +51,16 @@ export const useUpdateUser = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, payload }) => updataUser(id, payload),
-
+    mutationFn: ({ id, payload }) => updateUser(id, payload),
     onSuccess: () => {
       toast.success("User updated successfully");
-
       queryClient.invalidateQueries({
         queryKey: ["users"],
       });
     },
 
     onError: (error) => {
-      const message =
-        error?.response?.data?.message || "Failed to update user";
+      const message = error?.message || "Failed to update user";
 
       toast.error(message);
     },
@@ -90,8 +82,7 @@ export const useDeleteUser = () => {
     },
 
     onError: (error) => {
-      const message =
-        error?.response?.data?.message || "Failed to delete user";
+      const message = error?.message || "Failed to delete user";
 
       toast.error(message);
     },

@@ -8,23 +8,24 @@ import {
   useUpdateProduct,
   useProduct,
 } from "../../services/apiHooks/productsHook";
+import { useProductFilters } from "../../utils/useFilters";
 
-function EditProduct() {
+function EditProduct({ product: productFromProps, onClose }) {
   const navigate = useNavigate();
   const { productId } = useParams();
+  const { categories, brands } = useProductFilters();
+
+  const shouldFetchProduct = !productFromProps;
 
   const {
     data: response,
     isLoading: isProductLoading,
     isError,
-  } = useProduct(productId);
+  } = useProduct(shouldFetchProduct ? productId : undefined);
 
   const { mutate: updateProduct, isPending: isUpdating } = useUpdateProduct();
 
-  const product = response?.product || response;
-  console.log("productId:", productId);
-  console.log("response:", response);
-  console.log("product:", product);
+  const product = productFromProps || response?.product || response;
   const [formData, setFormData] = useState({
     name: "",
     shortDesc: "",
@@ -45,9 +46,6 @@ function EditProduct() {
   const [tagInput, setTagInput] = useState("");
   const [errors, setErrors] = useState({});
 
-  /*
-   * Fill form when product is loaded
-   */
   useEffect(() => {
     if (!product) return;
 
@@ -67,39 +65,29 @@ function EditProduct() {
       active: product.active ?? true,
     });
 
-    const productImages = product.images || product.image || [];
+    const productImages = product.images || [];
     setImages(
       Array.isArray(productImages)
         ? productImages.map((image) => image.url)
         : [],
     );
   }, [product]);
-  const productImages = product.images || product.image || [];
-  console.log("productImages ,");
-  /*
-   * Loading
-   */
-  if (isProductLoading) {
+  if (shouldFetchProduct && isProductLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-surface-base">
+      <div className="flex items-center justify-center bg-surface-base">
         <div className="text-sm font-medium text-text-muted">
           Loading product...
         </div>
       </div>
     );
   }
-
-  /*
-   * Error / Product not found
-   */
-  if (isError || !product) {
+  if (shouldFetchProduct && (isError || !product)) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-surface-base px-4">
+      <div className="flex items-center justify-center bg-surface-base px-4">
         <div className="rounded-2xl border border-border-subtle bg-surface-card px-6 py-8 text-center shadow-sm">
           <h2 className="text-lg font-bold text-text-primary">
             Product not found
           </h2>
-
           <p className="mt-2 text-sm text-text-muted">
             We couldn't load this product.
           </p>
@@ -131,19 +119,8 @@ function EditProduct() {
   };
 
   const handleImageChange = (e) => {
-    const files = Array.from(e.target.files || []);
-
-    if (!files.length) return;
-
-    /*
-     * NOTE:
-     * These are temporary browser URLs.
-     * If backend expects actual uploaded files,
-     * you'll need FormData / upload API.
-     */
-    const newImages = files.map((file) => URL.createObjectURL(file));
-
-    setImages((prev) => [...prev, ...newImages]);
+    const newFiles = Array.from(e.target.files);
+    setImages((prevImages) => [...prevImages, ...newFiles]);
 
     e.target.value = "";
   };
@@ -245,7 +222,11 @@ function EditProduct() {
       },
       {
         onSuccess: () => {
-          navigate("/products");
+          if (onClose) {
+            onClose();
+          } else {
+            navigate("/products");
+          }
         },
       },
     );
@@ -286,11 +267,19 @@ function EditProduct() {
 
               <div className="p-5 sm:p-6">
                 <ProductFormFields
+                  categories={categories}
+                  brands={brands}
                   formData={formData}
                   errors={errors}
                   onChange={handleChange}
                   isLoading={isUpdating}
-                  onCancel={() => navigate(-1)}
+                  onCancel={() => {
+                    if (onClose) {
+                      onClose();
+                    } else {
+                      navigate(-1);
+                    }
+                  }}
                   tagInput={tagInput}
                   setTagInput={setTagInput}
                   onAddTag={handleAddTag}

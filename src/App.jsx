@@ -29,10 +29,8 @@ function App() {
     }
   }, [isDark]);
 
-
-    /* they must be inside */
-const [modal,Setmodal]=useState(false)
-
+  /* they must be inside */
+  const [modal, Setmodal] = useState(false);
 
   return (
     <BrowserRouter>
@@ -44,7 +42,10 @@ const [modal,Setmodal]=useState(false)
             element={<Dashboard isDark={isDark} setIsDark={setIsDark} />}
           >
             <Route index element={<HomeDashboard />} />
-            <Route path="users" element={<Users modal={modal} Setmodal={Setmodal} />} />
+            <Route
+              path="users"
+              element={<Users modal={modal} Setmodal={Setmodal} />}
+            />
             <Route path="products" element={<Products />} />
             <Route path="product/edit/:productId" element={<EditProduct />} />
             <Route path="products/view/:id" element={<ViewProduct />} />

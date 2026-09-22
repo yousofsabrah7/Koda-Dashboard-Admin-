@@ -14,11 +14,6 @@ export const getProfile = async () => {
   return response.data;
 };
 
-export const adminTest = async () => {
-  const response = await apiClient.get("/auth/admin-test");
-  return response.data;
-};
-
 export const changeUserRole = async (payload) => {
   const response = await apiClient.patch("/auth/change-role", payload);
   return response.data;

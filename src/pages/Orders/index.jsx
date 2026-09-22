@@ -39,27 +39,14 @@ const index = () => {
     sortDir: "",
   });
 
-  // =========================
-  // Orders Query
-  // =========================
-
   const {
     data: ordersData,
     isLoading,
     isError,
   } = useAllOrders(page, 10, filters);
 
-  // =========================
-  // Update Status Mutation
-  // =========================
-
   const { mutate: changeOrderStatus, isPending: isUpdatingStatus } =
     useOrderStatus();
-
-  // =========================
-  // Table Columns
-  // =========================
-
   const columns = [
     {
       key: "order",
@@ -90,17 +77,12 @@ const index = () => {
     },
   ];
 
-  // =========================
-  // Filter Change
-  // =========================
-
   const handleFilterChange = (name, value) => {
     setFilters((prev) => ({
       ...prev,
       [name]: value,
     }));
 
-    // لما الفلتر يتغير نرجع لأول صفحة
     setPage(1);
   };
 
@@ -133,31 +115,18 @@ const index = () => {
   const handleCloseOrder = () => {
     setShowOrder(false);
 
-    // نستنى الـ animation وبعدها نشيل البيانات
     setTimeout(() => {
       setSelectedOrder(null);
     }, 300);
   };
 
-  // =========================
-  // Change Status
-  // =========================
-
   const handleStatusChange = (newStatus) => {
     if (!selectedOrder?._id) return;
-
     changeOrderStatus({
       orderId: selectedOrder._id,
-      payload: {
-        status: newStatus,
-        adminNote: selectedOrder.adminNote || "",
-      },
+      newStatus,
     });
   };
-
-  // =========================
-  // Rows
-  // =========================
 
   const rows =
     ordersData?.orders
@@ -177,12 +146,7 @@ const index = () => {
       })
       ?.map((order) => ({
         id: order._id,
-
-        // مهم:
-        // بنحتفظ بالـ order الأصلي
-        // عشان نستخدمه لما نضغط على الصف
         originalOrder: order,
-
         order: (
           <span className="font-mono text-xs font-medium text-text-primary">
             #{order?._id?.slice(-8).toUpperCase()}
@@ -238,10 +202,6 @@ const index = () => {
   return (
     <main className="relative min-h-screen w-full px-4 py-6 sm:px-6 lg:px-8">
       <div className="mx-auto flex w-full max-w-[1600px] flex-col gap-5">
-        {/* =========================
-            Header
-        ========================= */}
-
         <div
           className="
             flex w-full
@@ -269,22 +229,19 @@ const index = () => {
             className="
               rounded-xl
               border border-border-subtle
+              flex items-center
+              flex-col justify-center
               bg-surface-card
               px-4 py-2.5
             "
           >
-            <span className="text-lg font-semibold text-text-primary">
+            <span className="text-2xl font-semibold text-text-primary">
               {ordersData?.total ?? 0}
             </span>
 
-            <span className="ml-2 text-xs text-text-muted">total orders</span>
+            <span className="ml-2 text-sm text-text-muted">total orders</span>
           </div>
         </div>
-
-        {/* =========================
-            Search + Filters
-        ========================= */}
-
         <div
           className="
             w-full
@@ -321,7 +278,6 @@ const index = () => {
               <SlidersHorizontal size={18} />
             </button>
           </div>
-
           <div
             className={`
               overflow-hidden
@@ -342,10 +298,6 @@ const index = () => {
           </div>
         </div>
 
-        {/* =========================
-            Table
-        ========================= */}
-
         <Table
           columns={columns}
           rows={rows}
@@ -353,10 +305,6 @@ const index = () => {
           isError={isError}
           onRowClick={handleRowClick}
         />
-
-        {/* =========================
-            Pagination
-        ========================= */}
 
         <div className="mb-8 w-full">
           <Pagination
@@ -366,11 +314,6 @@ const index = () => {
           />
         </div>
       </div>
-
-      {/* =========================
-          View Order
-      ========================= */}
-
       <ViewOrder
         showOrder={showOrder}
         selectedOrder={selectedOrder}

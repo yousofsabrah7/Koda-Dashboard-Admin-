@@ -15,8 +15,9 @@ const Modal = ({
   const sizes = {
     sm: "max-w-sm",
     md: "max-w-md",
-    lg: "max-w-lg",
-    xl: "max-w-xl",
+    lg: "max-w-3xl",
+    xl: "max-w-6xl",
+    full: "max-w-[95vw]",
   };
 
   const handleOverlayClick = (e) => {
@@ -48,6 +49,7 @@ const Modal = ({
           relative
           w-full
           ${sizes[size]}
+          max-h-[calc(100vh-2rem)]
           overflow-hidden
           rounded-2xl
           border
@@ -57,16 +59,16 @@ const Modal = ({
           animate-in
           zoom-in-95
           duration-200
+          flex
+          flex-col
         `}
         onMouseDown={(e) => e.stopPropagation()}
       >
-        {/* =========================
-            Header
-        ========================= */}
-
+        {/* Header */}
         <div
           className="
             flex
+            shrink-0
             items-start
             justify-between
             gap-4
@@ -77,25 +79,10 @@ const Modal = ({
           "
         >
           <div className="min-w-0">
-            <h2
-              className="
-                text-lg
-                font-semibold
-                text-text-primary
-              "
-            >
-              {title}
-            </h2>
+            <h2 className="text-lg font-semibold text-text-primary">{title}</h2>
 
             {description && (
-              <p
-                className="
-                  mt-1
-                  text-sm
-                  leading-5
-                  text-text-muted
-                "
-              >
+              <p className="mt-1 text-sm leading-5 text-text-muted">
                 {description}
               </p>
             )}
@@ -123,20 +110,17 @@ const Modal = ({
           </button>
         </div>
 
-        {/* =========================
-            Body
-        ========================= */}
+        {/* Body */}
+        <div className="min-h-0 flex-1 overflow-y-auto px-5 py-5">
+          {children}
+        </div>
 
-        <div className="px-5 py-5">{children}</div>
-
-        {/* =========================
-            Footer
-        ========================= */}
-
+        {/* Footer */}
         {footer && (
           <div
             className="
               flex
+              shrink-0
               items-center
               justify-end
               gap-3
