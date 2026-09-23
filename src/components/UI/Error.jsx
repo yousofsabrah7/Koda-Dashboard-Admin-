@@ -15,7 +15,6 @@ const ErrorState = ({
       `}
     >
       <div className="flex w-full max-w-md flex-col items-center px-6 text-center">
-        {/* Icon */}
         <div
           className="
             flex size-16 items-center justify-center
@@ -26,7 +25,6 @@ const ErrorState = ({
           <AlertTriangle size={28} strokeWidth={1.8} />
         </div>
 
-        {/* Content */}
         <div className="mt-5">
           <h3 className="text-lg font-bold text-text-primary">
             {title}

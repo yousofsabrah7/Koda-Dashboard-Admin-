@@ -31,7 +31,7 @@ function Navbar({ isDark, setIsDark, showSidebar, setShowSidebar }) {
 
           <div className="max-[620px]:hidden">
             <h4 className="text-[17px] font-display font-semibold text-text-primary">
-              Koda Dashboard
+              E-Hub Dashboard
             </h4>
             <h5 className="text-[11px] mt-1 font-mono text-text-muted">
               E-Commerce Admin Panel

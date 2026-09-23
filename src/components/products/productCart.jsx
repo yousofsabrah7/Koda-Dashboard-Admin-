@@ -340,7 +340,7 @@ function ProductsCard({ products, isLoading, isError, onEdit }) {
                 </div>
 
                 <div
-                  className={`mb-4 px-4 ${user._id !== product.createdBy._id || user.email !== "admin@koda.com" ? "hidden" : ""}`}
+                  className={`mb-4 px-4 ${user?._id !== product?.createdBy?._id || user?.email !== "admin@E-Hub.com" ? "hidden" : ""}`}
                 >
                   <div className="mb-4 h-px bg-border-subtle" />
 

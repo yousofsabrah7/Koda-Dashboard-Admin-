@@ -112,8 +112,8 @@ const Users = () => {
     if (!user?._id) return;
     const newRole = user.role?.toLowerCase() === "admin" ? "customer" : "admin";
     changeRole({
-        userId: user?._id,
-        role: newRole,
+      userId: user?._id,
+      role: newRole,
     });
   };
   const handleAddUser = (payload) => {
@@ -196,7 +196,7 @@ const Users = () => {
   const rows = paginatedUsers.map((user) => {
     const isAdmin = user?.role?.toLowerCase() === "admin";
 
-    const canManageUser = currentUser?.email === "admin@koda.com";
+    const canManageUser = currentUser?.email === "admin@E-Hub.com";
 
     return {
       id: user._id,

@@ -22,7 +22,9 @@ function Login() {
               <path d="M3 6h18"></path>
               <path d="M16 10a4 4 0 0 1-8 0"></path>
             </svg>
-            <h1 className="text-text-primary font-bold text-3xl">Koda Commerce</h1>
+            <h1 className="text-text-primary font-bold text-3xl">
+              E-Hub ECommerce
+            </h1>
           </div>
           <h1 className="text-5xl font-bold text-text-secondary">
             Manage Your Store Like a Pro
@@ -47,7 +49,7 @@ function Login() {
           </ul>
         </div>
         <div className="  w-115 mx-auto  bg-surface-card border border-border-subtle md:w-1/2 py-15 rounded-xl md:rounded-l-none md:rounded-r-xl">
-            <FormLogin  />
+          <FormLogin />
         </div>
       </div>
     </div>
