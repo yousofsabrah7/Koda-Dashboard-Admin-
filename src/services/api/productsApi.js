@@ -88,7 +88,11 @@ export const updateProduct = async (id, payload) => {
   (payload.images || []).forEach((image) => {
     formData.append("images", image);
   });
-  console.log(payload.images);
-  const response = await apiClient.patch(`/products/update/${id}`, formData);
+  console.log(payload);
+  const response = await apiClient.patch(`/products/update/${id}`, formData, {
+    headers: {
+      "Content-Type": undefined,
+    },
+  });
   return response.data;
 };

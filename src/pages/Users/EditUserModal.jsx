@@ -11,11 +11,6 @@ const EditUserModal = ({
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-
-  /* =========================
-     Fill Inputs
-  ========================= */
-
   useEffect(() => {
     if (!user) return;
 
@@ -23,18 +18,9 @@ const EditUserModal = ({
     setEmail(user.email || "");
     setPhone(user.phone || "");
   }, [user]);
-
-  /* =========================
-     Close
-  ========================= */
-
   const handleClose = () => {
     setShowEditUser(false);
   };
-
-  /* =========================
-     Submit
-  ========================= */
 
   const handleSubmit = () => {
     if (!user?._id) return;
@@ -98,8 +84,6 @@ const EditUserModal = ({
       }
     >
       <div className="space-y-4">
-        {/* Username */}
-
         <input
           type="text"
           value={username}
@@ -121,8 +105,6 @@ const EditUserModal = ({
           "
         />
 
-        {/* Email */}
-
         <input
           type="email"
           value={email}
@@ -143,8 +125,6 @@ const EditUserModal = ({
             focus:border-accent
           "
         />
-
-        {/* Phone */}
 
         <input
           type="text"
