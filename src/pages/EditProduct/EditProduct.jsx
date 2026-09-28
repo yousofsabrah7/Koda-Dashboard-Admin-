@@ -43,15 +43,14 @@ function EditProduct({ product: productFromProps, onClose }) {
   });
 
   const [images, setImages] = useState([]);
+  const [newImages, setNewImages] = useState([]);
   const [tagInput, setTagInput] = useState("");
   const [errors, setErrors] = useState({});
-
   useEffect(() => {
     if (!product) return;
-
     setFormData({
       name: product.name || "",
-      shortDesc: product.shortDesc || "",
+      shortDesc: product.shortDescription || "",
       description: product.description || "",
       price: product.price ?? "",
       discountPrice: product.discountPrice ?? "",
@@ -120,13 +119,17 @@ function EditProduct({ product: productFromProps, onClose }) {
 
   const handleImageChange = (e) => {
     const newFiles = Array.from(e.target.files);
+    console.log(newFiles);
     setImages((prevImages) => [...prevImages, ...newFiles]);
-
+    setNewImages((prevImages) => [...prevImages, ...newFiles]);
     e.target.value = "";
   };
 
   const handleRemoveImage = (index) => {
     setImages((prev) => prev.filter((_, imageIndex) => imageIndex !== index));
+    setNewImages((prev) =>
+      prev.filter((_, imageIndex) => imageIndex !== index),
+    );
   };
 
   const handleAddTag = () => {
@@ -193,7 +196,6 @@ function EditProduct({ product: productFromProps, onClose }) {
 
     return Object.keys(newErrors).length === 0;
   };
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -212,9 +214,9 @@ function EditProduct({ product: productFromProps, onClose }) {
       discountPrice:
         formData.discountPrice === "" ? null : Number(formData.discountPrice),
 
-      images,
+      images: newImages,
     };
-
+    console.log(payload);
     updateProduct(
       {
         id: productId,

@@ -196,7 +196,7 @@ const Users = () => {
   const rows = paginatedUsers.map((user) => {
     const isAdmin = user?.role?.toLowerCase() === "admin";
 
-    const canManageUser = currentUser?.email === "admin@E-Hub.com";
+    const canManageUser = currentUser?.email === "admin@koda.com";
 
     return {
       id: user._id,

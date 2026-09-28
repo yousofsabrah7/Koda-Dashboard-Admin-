@@ -35,7 +35,7 @@ function AddProduct() {
   const isSuccess = createProductMutation.isSuccess;
   const handleImageChange = (e) => {
     const newFiles = Array.from(e.target.files);
-
+    console.log(newFiles);
     setImages((prevImages) => [...prevImages, ...newFiles]);
 
     e.target.value = "";

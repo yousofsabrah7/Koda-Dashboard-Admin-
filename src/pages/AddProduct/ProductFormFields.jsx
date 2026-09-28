@@ -23,11 +23,9 @@ function ProductFormFields({
         ? "border-red-500/70 focus:border-red-500 focus:ring-2 focus:ring-red-500/10"
         : "border-border-subtle focus:border-accent focus:ring-2 focus:ring-accent/10"
     }`;
-
   const labelClass = "mb-2 block text-xs font-semibold text-text-secondary";
 
   const errorClass = "mt-1.5 block text-xs text-red-500";
-
   return (
     <div className="flex w-full flex-col">
       <div className="mb-5">

@@ -89,6 +89,7 @@ function ImageGallery({
               <div
                 className="
                     relative
+                    
                     flex
                     w-full
                     items-center
